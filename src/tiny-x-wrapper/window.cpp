@@ -63,8 +63,15 @@ void Window::Destroy() {
 
   dispatcher_->RemoveListener(this);
 
+  XClearWindow(dispatcher_->GetDisplay()->Get(), id_);
   XDestroyWindow(dispatcher_->GetDisplay()->Get(), id_);
   id_ = None;
+}
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+const Display* Window::GetDisplay() {
+  return dispatcher_->GetDisplay();
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/

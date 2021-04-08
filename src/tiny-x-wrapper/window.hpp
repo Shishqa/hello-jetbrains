@@ -27,6 +27,10 @@ class Window {
 
   ~Window();
 
+  ::Window Id() const {
+    return id_;
+  }
+
  protected:
   /* called when being destroyed */
   virtual void OnDestroy() {
@@ -60,6 +64,8 @@ class Window {
   virtual void OnEvent(const XEvent& event) {
     UNUSED(event);
   }
+
+  const Display* GetDisplay();
 
  private:
   void Destroy();
