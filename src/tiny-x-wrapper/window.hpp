@@ -5,7 +5,9 @@
 
 #include <X11/X.h>
 #include <X11/Xlib.h>
+
 #include <wheels/vector.hpp>
+#include <wheels/util.hpp>
 
 #include "display.hpp"
 #include "dispatcher.hpp"
@@ -25,22 +27,49 @@ class Window {
 
   ~Window();
 
+ protected:
+  /* called when being destroyed */
+  virtual void OnDestroy() {
+  }
+
   virtual void OnExpose() {
   }
 
-  virtual void OnClose() {
+  virtual void OnMouseClicked(const Pos2& where) {
+    UNUSED(where); 
+  }
+
+  virtual void OnMouseReleased(const Pos2& where) {
+    UNUSED(where);
+  }
+
+  virtual void OnMouseMoved(const Pos2& where) {
+    UNUSED(where);
+  }
+
+  virtual void OnKeyPressed(int key, const Pos2& where) {
+    UNUSED(key);
+    UNUSED(where);
+  }
+
+  virtual void OnKeyReleased(int key, const Pos2& where) {
+    UNUSED(key);
+    UNUSED(where);
+  }
+
+  virtual void OnEvent(const XEvent& event) {
+    UNUSED(event);
   }
 
  private:
-  void Close();
-
-  friend EventDispatcher;
+  void Destroy();
 
  private:
   EventDispatcher* dispatcher_;
-  XWindowAttributes attr_;
   ::Window id_;
-  bool active_;
+  Atom wm_delete_msg_;
+
+  friend EventDispatcher;
 };
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/

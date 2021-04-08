@@ -17,7 +17,7 @@ namespace X11 {
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 Window::Window(EventDispatcher& dispatcher, Size2 size, Pos2 pos)
-    : dispatcher_(&dispatcher), active_(true) {
+    : dispatcher_(&dispatcher) {
 
   const Display* dpy = dispatcher_->GetDisplay();
 
@@ -38,7 +38,9 @@ Window::Window(EventDispatcher& dispatcher, Size2 size, Pos2 pos)
       &attr);
 
   XMapWindow(dpy->Get(), id_);
-  XStoreName(dpy->Get(), id_, "I <3 JetBrains");
+
+  wm_delete_msg_ = XInternAtom(dpy->Get(), "WM_DELETE_WINDOW", false);
+	XSetWMProtocols(dpy->Get(), id_, &wm_delete_msg_, 1);
 
   dispatcher_->AddListener(this);
 }
@@ -47,21 +49,22 @@ Window::Window(EventDispatcher& dispatcher, Size2 size, Pos2 pos)
 
 Window::~Window() {
   std::cerr << "destroying window\n";
-  Close();
+  Destroy();
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-void Window::Close() {
-  if (!active_) {
+void Window::Destroy() {
+  if (None == id_) {
     return;
   }
-  active_ = false;
 
-  OnClose();
+  OnDestroy();
 
   dispatcher_->RemoveListener(this);
+
   XDestroyWindow(dispatcher_->GetDisplay()->Get(), id_);
+  id_ = None;
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/

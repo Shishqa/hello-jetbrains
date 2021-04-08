@@ -8,7 +8,6 @@ namespace X11 {
 
 EventDispatcher::EventDispatcher(const Display& dpy, long event_mask)
     : dpy_(&dpy), event_mask_(event_mask) {
-  wm_delete_msg_ = XInternAtom(dpy_->Get(), "WM_DELETE_WINDOW", True);
 }
 
 EventDispatcher::EventDispatcher(const Display& dpy)
@@ -21,7 +20,6 @@ EventDispatcher::~EventDispatcher() {
 
 void EventDispatcher::AddListener(Window* window) {
   listeners_.insert(window);
-  XSetWMProtocols(dpy_->Get(), window->id_, &wm_delete_msg_, 1);
 }
 
 void EventDispatcher::RemoveListener(Window* window) {
@@ -76,10 +74,13 @@ void EventDispatcher::SendEvent(Window* listener, const XEvent& event) {
     case Expose:
       listener->OnExpose();
       break;
-    case ClientMessage:
-      if (event.xclient.data.l[0] == static_cast<long>(wm_delete_msg_)) {
-        listener->Close();         
+    case ClientMessage: {
+      Atom atom = XInternAtom(dpy_->Get(), "WM_DELETE_WINDOW", false);
+      if (event.xclient.data.l[0] == static_cast<long>(atom)) {
+        listener->Destroy();         
       }
+      break;
+    }
     default:
       break;
   }
