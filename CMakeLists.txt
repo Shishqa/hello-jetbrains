@@ -8,6 +8,4 @@ include(cmake/Sanitize.cmake)
 
 option(ASAN "Sanitize with Address Sanitizer" OFF)
 
-add_subdirectory(lib/wheels)
-add_subdirectory(lib/tiny-graphics)
 add_subdirectory(src)

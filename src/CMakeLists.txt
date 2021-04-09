@@ -15,3 +15,5 @@ target_include_directories(${TARGET_NAME}
     ${PROJECT_SOURCE_DIR}/lib
   )
 
+add_subdirectory(wheels)
+add_subdirectory(tiny-graphics)

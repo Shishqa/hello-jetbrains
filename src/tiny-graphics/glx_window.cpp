@@ -1,6 +1,6 @@
 #include "glx_window.hpp"
 #include <X11/Xlib.h>
-#include "tiny-x-wrapper/dispatcher.hpp"
+#include "tiny-xlib/dispatcher.hpp"
 
 namespace X11 {
 

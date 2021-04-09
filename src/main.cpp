@@ -8,15 +8,7 @@
 #include <stdint.h>
 #include <unistd.h>
 
-#include "tiny-graphics/tiny-gl-wrapper/shader.hpp"
-#include "tiny-graphics/tiny-gl-wrapper/gl_impl.hpp"
-#include "tiny-graphics/tiny-gl-wrapper/program.hpp"
-#include "tiny-graphics/tiny-x-wrapper/dispatcher.hpp"
-#include "tiny-graphics/tiny-x-wrapper/display.hpp"
-#include "tiny-graphics/glx_window.hpp"
-#include "tiny-graphics/tiny-gl-wrapper/color.hpp"
-#include "tiny-graphics/tiny-x-wrapper/shapes.hpp"
-#include "tiny-graphics/tiny-x-wrapper/visual.hpp"
+#include "tiny-graphics/tiny_graphics.hpp"
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 

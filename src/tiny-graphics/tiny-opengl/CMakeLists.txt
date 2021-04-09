@@ -1,5 +1,4 @@
-set(TARGET_NAME tiny-gl-wrapper)
-set(INCROOT ${PROJECT_SOURCE_DIR}/lib/tiny-graphics/tiny-gl-wrapper)
+set(TARGET_NAME tiny-opengl)
 
 add_library(${TARGET_NAME})
 target_sources(${TARGET_NAME}
@@ -17,7 +16,6 @@ target_link_libraries(${TARGET_NAME}
     GL GLU GLEW
   )
 target_include_directories(${TARGET_NAME}
-  PRIVATE
-    ${INCROOT}
-    ${PROJECT_SOURCE_DIR}/lib/
+  PUBLIC
+    ${PROJECT_SOURCE_DIR}/src
   )
