@@ -8,6 +8,7 @@ target_link_libraries(${TARGET_NAME}
   PRIVATE
     wheels
     tiny-x-wrapper
+    tiny-gl-wrapper
   )
 
 target_include_directories(${TARGET_NAME}
@@ -17,3 +18,4 @@ target_include_directories(${TARGET_NAME}
 
 
 add_subdirectory(tiny-x-wrapper)
+add_subdirectory(tiny-gl-wrapper)
