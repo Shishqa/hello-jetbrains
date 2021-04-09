@@ -41,7 +41,6 @@ class Window {
     return visual_;
   }
 
- protected:
   /* called when being destroyed */
   virtual void OnDestroy() {
   }

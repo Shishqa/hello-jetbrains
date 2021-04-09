@@ -16,13 +16,6 @@ class GlxWindow : public Window {
     glx_ctx_.Display();
   }
 
-  virtual void Draw() {
-  }
-
-  void OnDraw() final {
-    Draw();
-  }
-  
  protected:
   GlxContext glx_ctx_;
 };
