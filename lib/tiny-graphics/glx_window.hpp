@@ -2,7 +2,7 @@
 #define _GLX_WINDOW_H 
 
 #include <X11/Xlib.h>
-#include "window.hpp"
+#include "tiny-x-wrapper/window.hpp"
 #include "glx_context.hpp"
 
 namespace X11 {

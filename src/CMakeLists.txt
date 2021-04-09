@@ -7,8 +7,7 @@ add_executable(${TARGET_NAME}
 target_link_libraries(${TARGET_NAME}
   PRIVATE
     wheels
-    tiny-x-wrapper
-    tiny-gl-wrapper
+    tiny-graphics
   )
 
 target_include_directories(${TARGET_NAME}
@@ -16,5 +15,3 @@ target_include_directories(${TARGET_NAME}
     ${PROJECT_SOURCE_DIR}/lib
   )
 
-add_subdirectory(tiny-x-wrapper)
-add_subdirectory(tiny-gl-wrapper)

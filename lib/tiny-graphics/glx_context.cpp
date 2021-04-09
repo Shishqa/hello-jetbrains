@@ -2,8 +2,8 @@
 #include <GL/glx.h>
 #include <X11/X.h>
 #include <stdexcept>
-#include "visual.hpp"
-#include "window.hpp"
+#include "tiny-x-wrapper/visual.hpp"
+#include "tiny-x-wrapper/window.hpp"
 #include <iostream>
 
 namespace X11 {

@@ -1,5 +1,5 @@
 set(TARGET_NAME tiny-gl-wrapper)
-set(INCROOT ${PROJECT_SOURCE_DIR}/src/tiny-gl-wrapper)
+set(INCROOT ${PROJECT_SOURCE_DIR}/lib/tiny-graphics/tiny-gl-wrapper)
 
 add_library(${TARGET_NAME})
 target_sources(${TARGET_NAME}
