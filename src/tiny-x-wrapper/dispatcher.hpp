@@ -4,6 +4,7 @@
 /*============================================================================*/
 
 #include <unordered_set>
+#include <queue>
 
 #include <X11/X.h>
 #include <X11/Xlib.h>
@@ -18,13 +19,9 @@ class Window;
 
 class EventDispatcher {
  public:
-  EventDispatcher(const Display& dpy, long event_mask);
-  
-  explicit EventDispatcher(const Display& dpy);
+  EventDispatcher(::Display* dpy, long event_mask = ExposureMask);
 
   ~EventDispatcher();
-
-  const Display* GetDisplay() const;
 
   long EventMask() const;
 
@@ -37,17 +34,25 @@ class EventDispatcher {
   void Stop();
 
  private: 
+  void PollEvents();
+
+  void CollectGarbage();
+
+  void DisplayAll();
+
   virtual void HandleEvent(const XEvent& event);
 
   virtual void SendEvent(Window* listener, const XEvent& event);
 
  private:
-  const Display* dpy_;
+  ::Display* dpy_;
   long event_mask_;
   std::unordered_set<Window*> listeners_;
-  std::unordered_set<Window*> garbage_;
+  std::unordered_set<Window*> pending_expose_;
+  std::queue<Window*> garbage_;
   Atom wm_delete_msg_;
   bool running_;
+  bool need_expose_;
 };
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/

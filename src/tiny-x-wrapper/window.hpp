@@ -5,12 +5,14 @@
 
 #include <X11/X.h>
 #include <X11/Xlib.h>
+#include <stdint.h>
 
 #include <wheels/vector.hpp>
 #include <wheels/util.hpp>
 
 #include "display.hpp"
 #include "dispatcher.hpp"
+#include "visual.hpp"
 
 using Size2 = wheels::Size2;
 using Pos2 = wheels::Pos2;
@@ -21,14 +23,22 @@ namespace X11 {
 
 class Window {
  public:
-  Window(EventDispatcher& dispatcher, Size2 size, Pos2 pos);
+  Window(::Display* dpy, Visual& visual, Size2 size, Pos2 pos);
 
   Window() = delete;
 
   ~Window();
 
-  ::Window Id() const {
-    return id_;
+  ::Window Handle() const {
+    return handle_;
+  }
+  
+  ::Display* GetDisplay() const {
+    return dpy_;
+  }
+
+  Visual* GetVisual() const {
+    return visual_;
   }
 
  protected:
@@ -36,14 +46,19 @@ class Window {
   virtual void OnDestroy() {
   }
 
+  virtual void OnDraw() {
+  }
+
   virtual void OnExpose() {
   }
 
-  virtual void OnMouseClicked(const Pos2& where) {
+  virtual void OnMouseClicked(uint32_t button, const Pos2& where) {
+    UNUSED(button);
     UNUSED(where); 
   }
 
-  virtual void OnMouseReleased(const Pos2& where) {
+  virtual void OnMouseReleased(uint32_t button, const Pos2& where) {
+    UNUSED(button);
     UNUSED(where);
   }
 
@@ -51,28 +66,17 @@ class Window {
     UNUSED(where);
   }
 
-  virtual void OnKeyPressed(int key, const Pos2& where) {
-    UNUSED(key);
-    UNUSED(where);
-  }
-
-  virtual void OnKeyReleased(int key, const Pos2& where) {
-    UNUSED(key);
-    UNUSED(where);
-  }
-
   virtual void OnEvent(const XEvent& event) {
     UNUSED(event);
   }
-
-  const Display* GetDisplay();
 
  private:
   void Destroy();
 
  private:
-  EventDispatcher* dispatcher_;
-  ::Window id_;
+  ::Display* dpy_;
+  Visual* visual_;
+  ::Window handle_;
   Atom wm_delete_msg_;
 
   friend EventDispatcher;

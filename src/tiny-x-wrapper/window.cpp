@@ -16,33 +16,29 @@
 namespace X11 {
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-Window::Window(EventDispatcher& dispatcher, Size2 size, Pos2 pos)
-    : dispatcher_(&dispatcher) {
-
-  const Display* dpy = dispatcher_->GetDisplay();
+Window::Window(::Display* dpy, Visual& visual, Size2 size, Pos2 pos)
+    : dpy_(dpy), visual_(&visual) {
 
   XSetWindowAttributes attr = {};
-  attr.colormap = dpy->Colormap();
-  attr.event_mask = dispatcher_->EventMask();
+  attr.colormap = visual.Colormap();
 
-  id_ = XCreateWindow(
-      dpy->Get(), 
-      dpy->Root(), 
+  handle_ = XCreateWindow(
+      dpy_, 
+      XRootWindow(dpy_, XDefaultScreen(dpy_)), 
       pos.x, pos.y,
       size.x, size.y, 
       0, 
-      dpy->VisualInfo()->depth, 
+      visual.VisualInfo()->depth, 
       InputOutput, 
-      dpy->VisualInfo()->visual, 
-      CWColormap | CWEventMask, 
-      &attr);
+      visual.VisualInfo()->visual, 
+      CWColormap, &attr);
 
-  XMapWindow(dpy->Get(), id_);
+  XMapWindow(dpy, handle_);
 
-  wm_delete_msg_ = XInternAtom(dpy->Get(), "WM_DELETE_WINDOW", false);
-	XSetWMProtocols(dpy->Get(), id_, &wm_delete_msg_, 1);
+  wm_delete_msg_ = XInternAtom(dpy, "WM_DELETE_WINDOW", false);
+	XSetWMProtocols(dpy, handle_, &wm_delete_msg_, 1);
 
-  dispatcher_->AddListener(this);
+  std::cerr << "window created\n";
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -55,23 +51,14 @@ Window::~Window() {
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 void Window::Destroy() {
-  if (None == id_) {
+  if (None == handle_) {
     return;
   }
 
   OnDestroy();
 
-  dispatcher_->RemoveListener(this);
-
-  XClearWindow(dispatcher_->GetDisplay()->Get(), id_);
-  XDestroyWindow(dispatcher_->GetDisplay()->Get(), id_);
-  id_ = None;
-}
-
-/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
-const Display* Window::GetDisplay() {
-  return dispatcher_->GetDisplay();
+  XDestroyWindow(dpy_, handle_);
+  handle_ = None;
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/

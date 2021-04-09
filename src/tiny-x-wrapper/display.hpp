@@ -13,7 +13,7 @@ namespace X11 {
 
 class Display {
  public:
-  Display();
+  Display(const char* name = nullptr);
 
   ~Display();
 
@@ -23,14 +23,6 @@ class Display {
 
   ::Display* Get() const;
 
-  ::Window Root() const;
-
-  int Screen() const;
-
-  ::XVisualInfo* VisualInfo() const;
-
-  ::Colormap Colormap() const;
-
  private:
   void Open();
 
@@ -38,10 +30,6 @@ class Display {
 
  private:
   ::Display* display_;
-  ::XVisualInfo* vi_;
-  ::Colormap cmap_;
-  ::Window root_window_;
-  int screen_;
 };
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/

@@ -6,12 +6,8 @@
 
 namespace X11 {
 
-EventDispatcher::EventDispatcher(const Display& dpy, long event_mask)
-    : dpy_(&dpy), event_mask_(event_mask) {
-}
-
-EventDispatcher::EventDispatcher(const Display& dpy)
-    : EventDispatcher(dpy, ExposureMask) {
+EventDispatcher::EventDispatcher(::Display* dpy, long event_mask)
+    : dpy_(dpy), event_mask_(event_mask) {
 }
 
 EventDispatcher::~EventDispatcher() {
@@ -19,20 +15,45 @@ EventDispatcher::~EventDispatcher() {
 }
 
 void EventDispatcher::AddListener(Window* window) {
+  XSelectInput(dpy_, window->Handle(), event_mask_);
   listeners_.insert(window);
 }
 
 void EventDispatcher::RemoveListener(Window* window) {
-  garbage_.insert(window);
-}
-
-const Display* EventDispatcher::GetDisplay() const {
-  return dpy_;
+  garbage_.push(window);
 }
 
 long EventDispatcher::EventMask() const {
   return event_mask_;
 }
+
+
+void EventDispatcher::PollEvents() {
+  XEvent event;
+  do {
+    XNextEvent(dpy_, &event);
+    HandleEvent(event);
+  } while (XPending(dpy_));
+}
+
+
+void EventDispatcher::CollectGarbage() {
+  while (!garbage_.empty()) {
+    auto listener = garbage_.front();
+    garbage_.pop();
+    listeners_.erase(listener);
+  }
+  if (listeners_.empty()) {
+    Stop();
+  }
+}
+
+void EventDispatcher::DisplayAll() {
+  for (auto& listener : listeners_) {
+    listener->OnExpose();
+  }
+}
+
 
 void EventDispatcher::RunLoop() {
   if (listeners_.empty()) {
@@ -41,21 +62,12 @@ void EventDispatcher::RunLoop() {
 
   running_ = true;
 
-  XEvent event;
+  DisplayAll();
   while (running_) {
-    do {
-      XNextEvent(dpy_->Get(), &event);
-      HandleEvent(event);
-    } while (XPending(dpy_->Get()));
-
-    for (auto& win : garbage_) {
-      listeners_.erase(win);
-    }
-    garbage_.clear();
-
-    if (listeners_.empty()) {
-      Stop();
-    }
+    std::cerr << "poll\n";
+    PollEvents();
+    std::cerr << "garbage_\n";
+    CollectGarbage();
   }
 }
 
@@ -67,21 +79,50 @@ void EventDispatcher::HandleEvent(const XEvent& event) {
   for (auto& listener : listeners_) {
     SendEvent(listener, event);
   }
+  if (event.type == Expose) {
+    DisplayAll();
+  }
 }
 
 void EventDispatcher::SendEvent(Window* listener, const XEvent& event) {
   switch (event.type) {
     case Expose:
-      listener->OnExpose();
+      listener->OnDraw();
+      need_expose_ = true;
       break;
+    
+    case ButtonPress:
+      listener->OnMouseClicked(
+          event.xbutton.button, 
+          Pos2{event.xbutton.x, event.xbutton.y}
+          );
+      break;
+    
+    case ButtonRelease:
+      listener->OnMouseClicked(
+          event.xbutton.button, 
+          Pos2{event.xbutton.x, event.xbutton.y}
+          );
+      break;
+   
+    case MotionNotify:
+      listener->OnMouseMoved(
+          Pos2{event.xmotion.x, event.xmotion.y}
+          );
+      break;
+
     case ClientMessage: {
-      Atom atom = XInternAtom(dpy_->Get(), "WM_DELETE_WINDOW", false);
+      Atom atom = XInternAtom(dpy_, "WM_DELETE_WINDOW", False);
       if (event.xclient.data.l[0] == static_cast<long>(atom)) {
+        std::cerr << "destroying\n";
+        RemoveListener(listener);
         listener->Destroy();         
       }
       break;
     }
+    
     default:
+      listener->OnEvent(event);
       break;
   }
 }

@@ -19,66 +19,20 @@
 namespace X11 {
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-void Display::Open() {
-  display_ = XOpenDisplay(nullptr);
+Display::Display(const char* name) {
+  display_ = XOpenDisplay(name);
   if (!display_) {
-    throw std::runtime_error("X11: cannot connect to X server");
+    throw std::runtime_error("X11: cannot open display");
   }
-}
-
-void Display::Close() {
-  XCloseDisplay(display_);
-  display_ = nullptr;
-}
-
-/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
-Display::Display() {
-  Open();
-
-  screen_ = XDefaultScreen(display_);
-  root_window_ = XDefaultRootWindow(display_);
-
-  if (!glXQueryExtension(display_, nullptr, nullptr)) {
-    throw std::runtime_error("no GLX");
-  }
-
-  GLint attr[] = {GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None};
-
-  vi_ = glXChooseVisual(display_, screen_, attr);
-  if (!vi_) {
-    throw std::runtime_error("no visual");
-  }
-
-  cmap_ = XCreateColormap(display_, root_window_, vi_->visual, AllocNone);
 }
 
 Display::~Display() {
-  std::cerr << "destroying display\n";
-  free(vi_);
-  Close();
+  std::cerr << "closing display\n";
+  XCloseDisplay(display_);
 }
-
-/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 ::Display* Display::Get() const {
   return display_;
-}
-
-::Window Display::Root() const {
-  return root_window_;
-}
-
-int Display::Screen() const {
-  return screen_;
-}
-
-::XVisualInfo* Display::VisualInfo() const {
-  return vi_;
-}
-
-::Colormap Display::Colormap() const {
-  return cmap_;
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/

@@ -35,13 +35,18 @@ class Shape {
 
 class Triangle : public Shape {
  public:
-  explicit Triangle(Point2 dots[3]);
+  explicit Triangle(Point2 dots[3])
+    : Shape(dots[0]){
+    dots_[0] = dots[0];
+    dots_[1] = dots[1];
+    dots_[2] = dots[2];
+  }
 
   virtual void Draw() const override {
     glBegin(GL_TRIANGLES);
-     glVertex2f(dots_[0].x, dots_[0].y);
-     glVertex2f(dots_[1].x, dots_[2].y);
-     glVertex2f(dots_[2].x, dots_[2].y);
+     glVertex2d(dots_[0].x, dots_[0].y);
+     glVertex2d(dots_[1].x, dots_[2].y);
+     glVertex2d(dots_[2].x, dots_[2].y);
     glEnd();
   }
 
