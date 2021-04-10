@@ -10,15 +10,18 @@ Create an app, which will create a single-window filled with color #25854b on st
 
 - Linux distribution 
   (Tested on Arch Linux 5.10.25-1-lts. Probably, every Linux distro would be good)
-- X-Server running
+- Xlib
+- OpenGL
+- GLEW
 - C++ compiler (gcc, clang, ...)
 - CMake
 
 ```bash
-# On Arch
-sudo pacman -S gcc cmake glew libx11
+# Arch
+sudo pacman -S gcc cmake glew glu libx11
 
-# Other platforms: TBD
+# Ubuntu:
+sudo apt-get install build-essential cmake libgl1-mesa-dev libglu1-mesa-dev libgl-dev libglew-dev libx11-dev
 ```
 
 ## Building
