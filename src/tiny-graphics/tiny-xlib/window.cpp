@@ -33,6 +33,8 @@ Window::Window(::Display* dpy, Visual& visual, Size2 size, Pos2 pos)
   wm_delete_msg_ = XInternAtom(dpy, "WM_DELETE_WINDOW", false);
   XSetWMProtocols(dpy, handle_, &wm_delete_msg_, 1);
 
+  XGetWindowAttributes(dpy_, handle_, &attr_);
+
   wheels::Log() << "window " << this << " created";
 }
 
