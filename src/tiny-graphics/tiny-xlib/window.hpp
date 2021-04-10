@@ -14,6 +14,8 @@
 #include "dispatcher.hpp"
 #include "visual.hpp"
 
+#include <iostream>
+
 using Size2 = wheels::Size2;
 using Pos2 = wheels::Pos2;
 
@@ -41,11 +43,12 @@ class Window {
     return visual_;
   }
 
-  /* called when being destroyed */
-  virtual void OnDestroy() {
+  const XWindowAttributes& Attributes() const {
+    return attr_;
   }
 
-  virtual void OnDraw() {
+  /* called when being destroyed */
+  virtual void OnDestroy() {
   }
 
   virtual void OnExpose() {
@@ -66,7 +69,9 @@ class Window {
   }
 
   virtual void OnEvent(const XEvent& event) {
-    UNUSED(event);
+    if (event.type == ConfigureNotify) {
+      XGetWindowAttributes(dpy_, handle_, &attr_);
+    }
   }
 
  private:
@@ -76,6 +81,7 @@ class Window {
   ::Display* dpy_;
   Visual* visual_;
   ::Window handle_;
+  XWindowAttributes attr_;
   Atom wm_delete_msg_;
 
   friend EventDispatcher;

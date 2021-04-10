@@ -12,5 +12,4 @@ void Init();
 
 }
 
-
 #endif /* ifndef _GL_IMPL_HPP */

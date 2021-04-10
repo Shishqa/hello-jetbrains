@@ -10,11 +10,7 @@
 #include "tiny-xlib/visual.hpp"
 #include "tiny-xlib/window.hpp"
 #include "tiny-xlib/dispatcher.hpp"
-#include "tiny-xlib/shapes.hpp"
 
-#include "glx_window.hpp"
-#include "glx_context.hpp"
-
-
+#include "window.hpp"
 
 #endif /* ifndef _TINY_GRAPHICS_HPP */

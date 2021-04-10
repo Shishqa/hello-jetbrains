@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <cstdint>
 
+namespace GL {
+
 struct Color {
   Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
     data_[0] = static_cast<float>(r) / 255.;
@@ -17,5 +19,7 @@ struct Color {
 
 #define UNPACK_COLOR( color ) \
   color.data_[0], color.data_[1], color.data_[2], color.data_[3]
+
+}
 
 #endif /* ifndef COLOR */

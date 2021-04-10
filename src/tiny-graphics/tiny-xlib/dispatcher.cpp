@@ -1,22 +1,27 @@
+#include <chrono>
 #include <iostream>
 #include "dispatcher.hpp"
 #include <X11/X.h>
 #include <X11/Xlib.h>
 #include "window.hpp"
 
+#include <wheels/log.hpp>
+
 namespace X11 {
 
 EventDispatcher::EventDispatcher(::Display* dpy, long event_mask)
     : dpy_(dpy), event_mask_(event_mask) {
+  wheels::Log() << "created event dispatcher " << this;
 }
 
 EventDispatcher::~EventDispatcher() {
-  std::cerr << "destroying dispatcher\n";
+  wheels::Log() << "destroying event dispatcher " << this;
 }
 
 void EventDispatcher::AddListener(Window* window) {
   XSelectInput(dpy_, window->Handle(), event_mask_);
   listeners_.insert(window);
+  wheels::Log() << "added listener " << window << " to dispatcher " << this;
 }
 
 void EventDispatcher::RemoveListener(Window* window) {
@@ -42,8 +47,11 @@ void EventDispatcher::CollectGarbage() {
     auto listener = garbage_.front();
     garbage_.pop();
     listeners_.erase(listener);
+    wheels::Log() << "removed listener " << listener 
+                  << " from dispatcher " << this;
   }
   if (listeners_.empty()) {
+    wheels::Log() << "dispatcher(" << this << ") stopping as there is no listeners"; 
     Stop();
   }
 }
@@ -60,15 +68,16 @@ void EventDispatcher::RunLoop() {
     return;
   }
 
+  wheels::Log() << "running dispatcher(" << this << ")";
   running_ = true;
 
-  DisplayAll();
   while (running_) {
-    std::cerr << "poll\n";
+    DisplayAll();
     PollEvents();
-    std::cerr << "garbage_\n";
     CollectGarbage();
   }
+
+  wheels::Log() << "stopping dispatcher(" << this << ")";
 }
 
 void EventDispatcher::Stop() {
@@ -79,18 +88,10 @@ void EventDispatcher::HandleEvent(const XEvent& event) {
   for (auto& listener : listeners_) {
     SendEvent(listener, event);
   }
-  if (event.type == Expose) {
-    DisplayAll();
-  }
 }
 
 void EventDispatcher::SendEvent(Window* listener, const XEvent& event) {
   switch (event.type) {
-    case Expose:
-      listener->OnDraw();
-      need_expose_ = true;
-      break;
-    
     case ButtonPress:
       listener->OnMouseClicked(
           event.xbutton.button, 
@@ -99,7 +100,7 @@ void EventDispatcher::SendEvent(Window* listener, const XEvent& event) {
       break;
     
     case ButtonRelease:
-      listener->OnMouseClicked(
+      listener->OnMouseReleased(
           event.xbutton.button, 
           Pos2{event.xbutton.x, event.xbutton.y}
           );
@@ -114,7 +115,7 @@ void EventDispatcher::SendEvent(Window* listener, const XEvent& event) {
     case ClientMessage: {
       Atom atom = XInternAtom(dpy_, "WM_DELETE_WINDOW", False);
       if (event.xclient.data.l[0] == static_cast<long>(atom)) {
-        std::cerr << "destroying\n";
+        wheels::Log() << "got message from the WM, destroying " << listener;
         RemoveListener(listener);
         listener->Destroy();         
       }

@@ -6,8 +6,10 @@ target_sources(${TARGET_NAME}
     color.hpp
     gl_impl.hpp
     shader.hpp
+    program.hpp
   PRIVATE
     shader.cpp
+    program.cpp
     gl_impl.cpp
   )
 target_link_libraries(${TARGET_NAME}

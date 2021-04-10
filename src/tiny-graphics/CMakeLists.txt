@@ -3,16 +3,14 @@ set(TARGET_NAME tiny-graphics)
 add_library(${TARGET_NAME})
 target_sources(${TARGET_NAME}
   PUBLIC
-    glx_context.hpp
-    glx_window.hpp
+    tiny_graphics.hpp
+    window.hpp
   PRIVATE
-    glx_context.cpp
-    glx_window.cpp
+    window.cpp
   )
 target_link_libraries(${TARGET_NAME}
-  PRIVATE
-    wheels
   PUBLIC
+    wheels
     tiny-xlib
     tiny-opengl
   )

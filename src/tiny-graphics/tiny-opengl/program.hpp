@@ -1,9 +1,12 @@
 #ifndef _PROGRAM_HPP
 #define _PROGRAM_HPP
 
+#include <stdint.h>
 #include <stdexcept>
 #include <utility>
 #include <cstdint>
+#include <unordered_set>
+
 #include "gl_impl.hpp"
 #include "shader.hpp"
 
@@ -11,28 +14,17 @@ namespace GL {
 
 class Program {
  public:
-  Program() = delete;
+  Program();
 
-  template <typename... Shaders>
-  Program(Shaders&&... shaders) {
-    handle_ = glCreateProgram(); 
-    AttachShaders(std::forward<Shaders>(shaders)...);
-    glLinkProgram(handle_);
+  ~Program();
 
-    int success = 0;
-    glGetProgramiv(handle_, GL_LINK_STATUS, &success);
-    if(!success) {
-      throw std::runtime_error("bad program");
-    }
+  Program(const Program& other) = delete;
+  Program& operator=(const Program& other) = delete;
+
+  uint32_t Handle() const {
+    return handle_;
   }
 
-  ~Program() = default;
-
-  void SetActive() {
-    glUseProgram(handle_);
-  }
-
- private:
   template <typename... Shaders>
   void AttachShaders(const Shader& shader, Shaders&&... shaders) {
     Attach(shader);
@@ -43,11 +35,17 @@ class Program {
     Attach(shader);
   }
 
-  void Attach(const Shader& shader) {
-    glAttachShader(handle_, shader.Handle());
+  void Link();
+
+  void SetActive() {
+    glUseProgram(handle_);
   }
 
+ private:
+  void Attach(const Shader& shader);
+
   uint32_t handle_;
+  std::unordered_set<uint32_t> shaders_;
 };
 
 }

@@ -7,10 +7,14 @@
 #include <X11/Xutil.h>
 #include <stdexcept>
 
+#include <wheels/log.hpp>
+
 namespace X11 {
 
 Visual::Visual(::Display* dpy)
     : vi_(nullptr), cmap_(None) {
+
+  wheels::Log() << "initializing visual for display " << dpy; 
 
   int screen = XDefaultScreen(dpy);
  
@@ -19,10 +23,11 @@ Visual::Visual(::Display* dpy)
   if ( !glXQueryVersion( dpy, &glx_major, &glx_minor ) || 
        ( ( glx_major == 1 ) && ( glx_minor < 3 ) ) || ( glx_major < 1 ) )
   {
-    throw std::runtime_error("bad glx version");
+    wheels::Log() << "Error: bad GLX version " << glx_major << "." << glx_minor; 
+    throw std::runtime_error("bad GLX version");
   }
 
-  static int visual_attribs[] = {
+  static constexpr int visual_attribs[] = {
     GLX_X_RENDERABLE    , True,
     GLX_DRAWABLE_TYPE   , GLX_WINDOW_BIT,
     GLX_RENDER_TYPE     , GLX_RGBA_BIT,
@@ -40,6 +45,7 @@ Visual::Visual(::Display* dpy)
   int num_fbc = 0;
   GLXFBConfig *fbc = glXChooseFBConfig(dpy, screen, visual_attribs, &num_fbc);
   if (!fbc) {
+    wheels::Log() << "Error: cannot find suitable framebuffer config";
     throw std::runtime_error("Cannot find framebuffer config");
   }
 
@@ -49,16 +55,24 @@ Visual::Visual(::Display* dpy)
   ctx_creator_ = reinterpret_cast<CtxCreator>(
     glXGetProcAddress((const GLubyte*)"glXCreateContextAttribsARB"));
   if (!ctx_creator_) {
+    wheels::Log() << "Error: cannot find glXCreateContextAttribsARB()";
     throw std::runtime_error("glXCreateContextAttribsARB() not found");
   }
 
   vi_ = glXGetVisualFromFBConfig(dpy, framebuf_cfg_);
   if (!vi_) {
-    throw std::runtime_error("no visual");
+    wheels::Log() << "Error: cannot get visual from FB config";
+    throw std::runtime_error("cannot get visual");
   }
 
   cmap_ = XCreateColormap(dpy, XRootWindow(dpy, screen), 
                           vi_->visual, AllocNone);
+  if (!cmap_) {
+    wheels::Log() << "Error: cannot create colormap";
+    throw std::runtime_error("cannot create colormap");
+  }
+
+  wheels::Log() << "visual initialized";
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/

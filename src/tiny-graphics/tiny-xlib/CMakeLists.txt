@@ -7,12 +7,13 @@ target_sources(${TARGET_NAME}
     visual.hpp
     dispatcher.hpp
     window.hpp
-    shapes.hpp
+    glx_context.hpp
   PRIVATE
     display.cpp
     visual.cpp
     dispatcher.cpp
     window.cpp
+    glx_context.cpp
   )
 
 target_link_libraries(${TARGET_NAME}

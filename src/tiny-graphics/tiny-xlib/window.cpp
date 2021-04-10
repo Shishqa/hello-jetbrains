@@ -12,6 +12,8 @@
 #include "display.hpp"
 #include "window.hpp"
 
+#include <wheels/log.hpp>
+
 /*============================================================================*/
 namespace X11 {
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -38,14 +40,14 @@ Window::Window(::Display* dpy, Visual& visual, Size2 size, Pos2 pos)
   wm_delete_msg_ = XInternAtom(dpy, "WM_DELETE_WINDOW", false);
 	XSetWMProtocols(dpy, handle_, &wm_delete_msg_, 1);
 
-  std::cerr << "window created\n";
+  wheels::Log() << "window " << this << " created";
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 Window::~Window() {
-  std::cerr << "destroying window\n";
   Destroy();
+  wheels::Log() << "window " << this << " destroyed (in destructor)";
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -59,6 +61,8 @@ void Window::Destroy() {
 
   XDestroyWindow(dpy_, handle_);
   handle_ = None;
+  
+  wheels::Log() << "window " << this << " destroyed (in Destroy())";
 }
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/

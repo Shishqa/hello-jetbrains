@@ -2,9 +2,11 @@
 #include <GL/glx.h>
 #include <X11/X.h>
 #include <stdexcept>
-#include "tiny-xlib/visual.hpp"
-#include "tiny-xlib/window.hpp"
+#include "visual.hpp"
+#include "window.hpp"
 #include <iostream>
+
+#include <wheels/log.hpp>
 
 namespace X11 {
 
@@ -20,15 +22,17 @@ GlxContext::GlxContext(Window& owner)
   ctx_ = owner_->GetVisual()->CreateGLXContext(
       owner_->GetDisplay(), context_attribs);
   if (!ctx_) {
-    throw std::runtime_error("cannot create context");
+    wheels::Log() << "Error: cannot create GLX context"; 
+    throw std::runtime_error("cannot create GLX context");
   }
 
-  std::cerr << "glx_context created\n";
+  wheels::Log() << "created GLX context " << this;
 }
 
 GlxContext::~GlxContext() {
   MakeCurrent(false);
   glXDestroyContext(owner_->GetDisplay(), ctx_); 
+  wheels::Log() << "destroyed GLX context " << this;
 }
 
 void GlxContext::MakeCurrent(bool current) {
