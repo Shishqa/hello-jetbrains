@@ -12,3 +12,7 @@ target_sources(${TARGET_NAME}
     vector.ipp
     log.cpp
   )
+target_include_directories(${TARGET_NAME}
+  PUBLIC
+    ${CMAKE_SOURCE_DIR}/src
+  )

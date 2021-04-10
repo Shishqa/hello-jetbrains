@@ -1,13 +1,16 @@
+/*============================================================================*/
+
+#include <tiny-graphics/tiny_graphics.hpp>
+#include <wheels/util.hpp>
+
 #include "simple_window.hpp"
-#include <X11/X.h>
-#include <X11/Xlib.h>
-#include "tiny-graphics/tiny-xlib/visual.hpp"
-#include "wheels/util.hpp"
 
+/*============================================================================*/
 namespace task {
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-SimpleWindow::SimpleWindow(::Display* dpy, X11::Visual& visual, Size2 size,
-                           Pos2 pos)
+SimpleWindow::SimpleWindow(::Display* dpy, X11::Visual& visual, tg::Size2 size,
+                           tg::Pos2 pos)
     : tg::Window(dpy, visual, std::move(size), std::move(pos)) {
   GL::Shader vrtx_shader(GL_VERTEX_SHADER, "src/shaders/with_offset.vert");
   GL::Shader frag_shader(GL_FRAGMENT_SHADER, "src/shaders/standard.frag");
@@ -16,6 +19,8 @@ SimpleWindow::SimpleWindow(::Display* dpy, X11::Visual& visual, Size2 size,
 
   offset_loc_ = glGetUniformLocation(main_program_.Handle(), "offset"); 
 }
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 void SimpleWindow::Draw() {
   const auto& attr = Attributes();
@@ -35,14 +40,18 @@ void SimpleWindow::Draw() {
   }
 }
 
-void SimpleWindow::OnMouseClicked(uint32_t button, const Pos2& where) {
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+void SimpleWindow::OnMouseClicked(uint32_t button, const tg::Pos2& where) {
   if (button == Button1) {
     is_active_ = true;
     triangle_.SetPos(where);
   }
 }
 
-void SimpleWindow::OnMouseReleased(uint32_t button, const Pos2& where) {
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+void SimpleWindow::OnMouseReleased(uint32_t button, const tg::Pos2& where) {
   UNUSED(where);
 
   if (button == Button1) {
@@ -50,10 +59,15 @@ void SimpleWindow::OnMouseReleased(uint32_t button, const Pos2& where) {
   }
 }
 
-void SimpleWindow::OnMouseMoved(const Pos2& where) {
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+void SimpleWindow::OnMouseMoved(const tg::Pos2& where) {
   if (is_active_) {
     triangle_.SetPos(where);
   }
 }
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 }  // namespace task
+/*============================================================================*/
+

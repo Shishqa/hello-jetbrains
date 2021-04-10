@@ -1,38 +1,38 @@
-@ Wheels Log Sat Apr 10 15:27:08 2021
+@ Wheels Log Sat Apr 10 16:12:55 2021
 
-[1614458] opened X connection 0x621000001500
-[1667392] initializing visual for display 0x621000001500
-[54970720] visual initialized
-[55123693] window 0x7ffd9eca0cf0 created
-[61078185] created GLX context 0x7ffd9eca0da0
-[72728780] GLX context bind to window 0x7ffd9eca0cf0
-[72735857] initializing OpenGL
-[75241810] renderer: Mesa Intel(R) UHD Graphics 620 (KBL GT2)
-[75246183] OpenGL version: 4.6 (Core Profile) Mesa 20.3.4
-[76106797] destroyed GLX context 0x7ffd9eca0da0
-[76123656] window 0x7ffd9eca0cf0 destroyed (in Destroy())
-[76125535] window 0x7ffd9eca0cf0 destroyed (in destructor)
-[76157246] created event dispatcher 0x7ffd9eca0df0
-[76167894] window 0x7ffd9eca0f20 created
-[76778900] created GLX context 0x7ffd9eca0fd0
-[78124891] GLX context bind to window 0x7ffd9eca0f20
-[78247029] Program 1 created
-[92124966] Shader 2 loaded and compiled
-[92223224] Shader 3 loaded and compiled
-[92249812] Attached shader 2 to the program 1
-[92255040] Attached shader 3 to the program 1
-[92522624] program 1successfully linked
-[92536919] Shader 3 deleted
-[92538826] Shader 2 deleted
-[92589033] added listener 0x7ffd9eca0f20 to dispatcher 0x7ffd9eca0df0
-[92591626] running dispatcher(0x7ffd9eca0df0)
-[27119913120] got message from the WM, destroying 0x7ffd9eca0f20
-[27119937124] window 0x7ffd9eca0f20 destroyed (in Destroy())
-[27120007021] removed listener 0x7ffd9eca0f20 from dispatcher 0x7ffd9eca0df0
-[27120014153] dispatcher(0x7ffd9eca0df0) stopping as there is no listeners
-[27120019497] stopping dispatcher(0x7ffd9eca0df0)
-[27120030290] Program 1 deleted
-[27134300903] destroyed GLX context 0x7ffd9eca0fd0
-[27134322459] window 0x7ffd9eca0f20 destroyed (in destructor)
-[27134327168] destroying event dispatcher 0x7ffd9eca0df0
-[27139027982] display 0x621000001500 closed
+[2757255] opened X connection 0x621000001500
+[2835408] initializing visual for display 0x621000001500
+[68291080] visual initialized
+[68468632] window 0x7ffc0b887190 created
+[76305047] created GLX context 0x7ffc0b887240
+[97406531] GLX context bind to window 0x7ffc0b887190
+[97415288] initializing OpenGL
+[102668799] renderer: Mesa Intel(R) UHD Graphics 620 (KBL GT2)
+[102678256] OpenGL version: 4.6 (Core Profile) Mesa 20.3.4
+[103834769] destroyed GLX context 0x7ffc0b887240
+[103863053] window 0x7ffc0b887190 destroyed (in Destroy())
+[103865045] window 0x7ffc0b887190 destroyed (in destructor)
+[103917425] created event dispatcher 0x7ffc0b887290
+[103930221] window 0x7ffc0b8873b0 created
+[104860831] created GLX context 0x7ffc0b887460
+[113459398] GLX context bind to window 0x7ffc0b8873b0
+[113930238] Program 1 created
+[135035712] Shader 2 loaded and compiled
+[135176702] Shader 3 loaded and compiled
+[135205438] Attached shader 2 to the program 1
+[135216575] Attached shader 3 to the program 1
+[135478068] program 1successfully linked
+[135492528] Shader 3 deleted
+[135494016] Shader 2 deleted
+[135559225] added listener 0x7ffc0b8873b0 to dispatcher 0x7ffc0b887290
+[135562546] running dispatcher(0x7ffc0b887290)
+[19583247066] got message from the WM, destroying 0x7ffc0b8873b0
+[19583268367] window 0x7ffc0b8873b0 destroyed (in Destroy())
+[19583335835] removed listener 0x7ffc0b8873b0 from dispatcher 0x7ffc0b887290
+[19583340646] dispatcher(0x7ffc0b887290) stopping as there is no listeners
+[19583344223] stopping dispatcher(0x7ffc0b887290)
+[19583353187] Program 1 deleted
+[19598580744] destroyed GLX context 0x7ffc0b887460
+[19598596119] window 0x7ffc0b8873b0 destroyed (in destructor)
+[19598600518] destroying event dispatcher 0x7ffc0b887290
+[19603139081] display 0x621000001500 closed

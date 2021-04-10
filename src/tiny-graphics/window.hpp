@@ -1,15 +1,20 @@
-#ifndef _GRAPHICS_WINDOW_H
-#define _GRAPHICS_WINDOW_H 
+/*============================================================================*/
+#ifndef _TINY_GRAPHICS_WINDOW_HPP
+#define _TINY_GRAPHICS_WINDOW_HPP
+/*============================================================================*/
 
-#include "tiny-xlib/window.hpp"
-#include "tiny-xlib/glx_context.hpp"
+#include <tiny-graphics/tiny-xlib/window.hpp>
+#include <tiny-graphics/tiny-xlib/glx_context.hpp>
 
-#include <iostream>
-
+/*============================================================================*/
 namespace tg {
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+using Size2 = X11::Size2;
+using Pos2 = X11::Pos2;
 
 class Window : public X11::Window {
- public: 
+ public:
   Window(::Display* dpy, X11::Visual& visual, Size2 size, Pos2 pos);
 
   virtual void Draw() {
@@ -22,7 +27,8 @@ class Window : public X11::Window {
   X11::GlxContext glx_ctx_;
 };
 
-}
-
-
-#endif /* ifndef _GLX_WINDOW_H */
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+}  // namespace tg
+/*============================================================================*/
+#endif /* ifndef _TINY_GRAPHICS_WINDOW_HPP */
+/*============================================================================*/

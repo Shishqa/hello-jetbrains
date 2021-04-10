@@ -1,7 +1,11 @@
+/*============================================================================*/
+
 #include "simple_triangle.hpp"
 #include "tiny-graphics/tiny-xlib/window.hpp"
 
+/*============================================================================*/
 namespace task {
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 SimpleTriangle::SimpleTriangle() {
   static constexpr float vertices_[] = {
@@ -22,22 +26,31 @@ SimpleTriangle::SimpleTriangle() {
   glEnableVertexAttribArray(0);
 }
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
 SimpleTriangle::~SimpleTriangle() {
   glDeleteBuffers(1, &vrtx_buff_);
   glDeleteVertexArrays(1, &vrtx_attr_);
 }
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 void SimpleTriangle::Draw() {
   glBindVertexArray(vrtx_attr_);
   glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
-const Pos2& SimpleTriangle::GetPos() const {
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+const tg::Pos2& SimpleTriangle::GetPos() const {
   return pos_;
 }
 
-void SimpleTriangle::SetPos(Pos2 new_pos) {
+void SimpleTriangle::SetPos(tg::Pos2 new_pos) {
   pos_ = std::move(new_pos);
 }
 
-}
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+}  // namespace task
+/*============================================================================*/
+

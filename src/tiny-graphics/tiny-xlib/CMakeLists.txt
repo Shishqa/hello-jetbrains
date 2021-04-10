@@ -24,6 +24,5 @@ target_link_libraries(${TARGET_NAME}
 
 target_include_directories(${TARGET_NAME}
   PUBLIC
-    ${PROJECT_SOURCE_DIR}/src/
     ${X11_INCLUDE_DIRECTORY}
   )

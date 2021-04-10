@@ -1,9 +1,12 @@
+/*============================================================================*/
+
 #include <iostream>
-
 #include <exception>
-
 #include <wheels/log.hpp>
+
 #include "simple_window.hpp"
+
+/*============================================================================*/
 
 int main(int /*argc*/, char* /*argv*/[]) {
   try {
@@ -13,14 +16,18 @@ int main(int /*argc*/, char* /*argv*/[]) {
     X11::Visual visual(display.Get());
 
     {
-      tg::Window dummy(display.Get(), visual, Size2{100, 100}, Pos2{});
+      // dummy is needed to initialize OpenGL properly
+      // https://community.khronos.org/t/help-solve-glew-failure-with-glx/63190/2
+      tg::Window dummy(display.Get(), visual, tg::Size2{100, 100}, tg::Pos2{});
       GL::Init();
     }
 
-    X11::EventDispatcher dispatcher(display.Get(), 
-        ExposureMask | PointerMotionMask | ButtonPressMask | ButtonReleaseMask | StructureNotifyMask);
+    X11::EventDispatcher dispatcher(
+        display.Get(), ExposureMask | PointerMotionMask | ButtonPressMask |
+                           ButtonReleaseMask | StructureNotifyMask);
 
-    task::SimpleWindow win(display.Get(), visual, Size2{500, 500}, Pos2{0, 0});
+    task::SimpleWindow win(display.Get(), visual, tg::Size2{500, 500},
+                           tg::Pos2{0, 0});
     dispatcher.AddListener(&win);
 
     dispatcher.RunLoop();
@@ -34,3 +41,5 @@ int main(int /*argc*/, char* /*argv*/[]) {
 
   return 0;
 }
+
+/*============================================================================*/

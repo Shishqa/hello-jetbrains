@@ -1,13 +1,14 @@
-#ifndef _VISUAL_HPP
-#define _VISUAL_HPP
+/*============================================================================*/
+#ifndef _X11_VISUAL_HPP
+#define _X11_VISUAL_HPP
+/*============================================================================*/
 
-#include <X11/X.h>
 #include <X11/Xlib.h>
-#include <X11/Xutil.h>
-
 #include <GL/glx.h>
 
+/*============================================================================*/
 namespace X11 {
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 class Visual {
  public:
@@ -22,7 +23,7 @@ class Visual {
   const ::XVisualInfo* VisualInfo() const;
 
   ::Colormap Colormap() const;
-  
+
   ::GLXContext CreateGLXContext(::Display* dpy, const int* attr) const;
 
  private:
@@ -34,6 +35,8 @@ class Visual {
   GLXFBConfig framebuf_cfg_;
 };
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 }  // namespace X11
-
-#endif /* ifndef _VISUAL_HPP */
+/*============================================================================*/
+#endif /* ifndef _X11_VISUAL_HPP */
+/*============================================================================*/

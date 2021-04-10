@@ -3,8 +3,9 @@
 #define _SIMPLE_WINDOW_HPP
 /*============================================================================*/
 
-#include <stdint.h>
+#include <cstdint>
 #include <tiny-graphics/tiny_graphics.hpp>
+
 #include "simple_triangle.hpp"
 
 /*============================================================================*/
@@ -13,15 +14,15 @@ namespace task {
 
 class SimpleWindow : public tg::Window {
  public:
-  SimpleWindow(::Display* dpy, X11::Visual& visual, Size2 size, Pos2 pos);
+  SimpleWindow(::Display* dpy, X11::Visual& visual, tg::Size2 size, tg::Pos2 pos);
 
   void Draw() override;
 
-  void OnMouseClicked(uint32_t button, const Pos2& where) override;
+  void OnMouseClicked(uint32_t button, const tg::Pos2& where) override;
 
-  void OnMouseReleased(uint32_t button, const Pos2& where) override;
+  void OnMouseReleased(uint32_t button, const tg::Pos2& where) override;
 
-  void OnMouseMoved(const Pos2& where) override;
+  void OnMouseMoved(const tg::Pos2& where) override;
 
  private:
   SimpleTriangle triangle_;

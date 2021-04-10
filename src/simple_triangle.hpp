@@ -1,10 +1,13 @@
+/*============================================================================*/
 #ifndef _SIMPLE_TRIANGLE_HPP
 #define _SIMPLE_TRIANGLE_HPP
+/*============================================================================*/
 
 #include <tiny-graphics/tiny_graphics.hpp>
-#include "tiny-graphics/tiny-xlib/window.hpp"
 
+/*============================================================================*/
 namespace task {
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 class SimpleTriangle {
  public:
@@ -14,18 +17,19 @@ class SimpleTriangle {
 
   void Draw();
 
-  const Pos2& GetPos() const;
+  const tg::Pos2& GetPos() const;
 
-  void SetPos(Pos2 new_pos);
+  void SetPos(tg::Pos2 new_pos);
 
  private:  
   uint32_t vrtx_buff_;
   uint32_t vrtx_attr_;
-
-  Pos2 pos_{0, 0};
+  tg::Pos2 pos_{0, 0};
 };
 
-}
-
-
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+}  // namespace task
+/*============================================================================*/
 #endif /* ifndef _SIMPLE_TRIANGLE_HPP */
+/*============================================================================*/
+

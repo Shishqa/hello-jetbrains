@@ -1,11 +1,11 @@
 /*============================================================================*/
-#ifndef X_WRAPPER_WINDOW
-#define X_WRAPPER_WINDOW
+#ifndef _X11_WINDOW_HPP
+#define _X11_WINDOW_HPP
 /*============================================================================*/
 
-#include <X11/X.h>
+#include <cstdint>
+
 #include <X11/Xlib.h>
-#include <stdint.h>
 
 #include <wheels/vector.hpp>
 #include <wheels/util.hpp>
@@ -14,14 +14,12 @@
 #include "dispatcher.hpp"
 #include "visual.hpp"
 
-#include <iostream>
-
-using Size2 = wheels::Size2;
-using Pos2 = wheels::Pos2;
-
 /*============================================================================*/
 namespace X11 {
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+using Size2 = wheels::Size2;
+using Pos2 = wheels::Pos2;
 
 class Window {
  public:
@@ -31,48 +29,28 @@ class Window {
 
   ~Window();
 
-  ::Window Handle() const {
-    return handle_;
-  }
+  Window(const Window& other) = delete;
+  Window& operator=(const Window& other) = delete;
+
+  ::Window Handle() const;
   
-  ::Display* GetDisplay() const {
-    return dpy_;
-  }
+  ::Display* GetDisplay() const;
 
-  Visual* GetVisual() const {
-    return visual_;
-  }
+  Visual* GetVisual() const;
 
-  const XWindowAttributes& Attributes() const {
-    return attr_;
-  }
+  const XWindowAttributes& Attributes() const;
 
-  /* called when being destroyed */
-  virtual void OnDestroy() {
-  }
+  virtual void OnDestroy();
 
-  virtual void OnExpose() {
-  }
+  virtual void OnExpose();
 
-  virtual void OnMouseClicked(uint32_t button, const Pos2& where) {
-    UNUSED(button);
-    UNUSED(where); 
-  }
+  virtual void OnMouseClicked(uint32_t button, const Pos2& where);
 
-  virtual void OnMouseReleased(uint32_t button, const Pos2& where) {
-    UNUSED(button);
-    UNUSED(where);
-  }
+  virtual void OnMouseReleased(uint32_t button, const Pos2& where);
 
-  virtual void OnMouseMoved(const Pos2& where) {
-    UNUSED(where);
-  }
+  virtual void OnMouseMoved(const Pos2& where);
 
-  virtual void OnEvent(const XEvent& event) {
-    if (event.type == ConfigureNotify) {
-      XGetWindowAttributes(dpy_, handle_, &attr_);
-    }
-  }
+  virtual void OnEvent(const XEvent& event);
 
  private:
   void Destroy();
@@ -90,5 +68,5 @@ class Window {
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 }  // namespace X11
 /*============================================================================*/
-#endif /* ifndef X_WRAPPER_WINDOW */
+#endif /* ifndef _X11_WINDOW_HPP */
 /*============================================================================*/

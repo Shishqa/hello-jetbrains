@@ -1,10 +1,13 @@
-#ifndef _GLX_CONTEXT_HPP
-#define _GLX_CONTEXT_HPP
+/*============================================================================*/
+#ifndef _X11_GLX_CONTEXT_HPP
+#define _X11_GLX_CONTEXT_HPP
+/*============================================================================*/
 
 #include <GL/glx.h>
-#include <X11/X.h>
 
+/*============================================================================*/
 namespace X11 {
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 class Window;
 
@@ -13,6 +16,9 @@ class GlxContext {
   GlxContext(Window& owner);
 
   ~GlxContext();
+
+  GlxContext(const GlxContext& other) = delete;
+  GlxContext& operator=(const GlxContext& other) = delete;
 
   void MakeCurrent(bool current);
 
@@ -23,6 +29,8 @@ class GlxContext {
   GLXContext ctx_;
 };
 
-}
-
-#endif /* ifndef _GLX_CONTEXT_HPP */
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+}  // namespace X11
+/*============================================================================*/
+#endif /* ifndef _X11_GLX_CONTEXT_HPP */
+/*============================================================================*/

@@ -1,11 +1,16 @@
-#include "log.hpp"
+/*============================================================================*/
+
 #include <fstream>
 #include <stdexcept>
 
 #include <chrono>
 #include <ctime>
 
+#include "log.hpp"
+
+/*============================================================================*/
 namespace wheels {
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 namespace chrono = std::chrono;
 
@@ -29,7 +34,9 @@ std::ofstream& Log() {
   return LOG_CTX.stream_;
 }
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 namespace log {
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 void Init(std::string_view path) {
   if (LOG_CTX.stream_.is_open()) {
@@ -38,7 +45,7 @@ void Init(std::string_view path) {
 
   LOG_CTX.stream_.open(path.data());
   if (!LOG_CTX.stream_) {
-    throw std::runtime_error("cannot open log"); 
+    throw std::runtime_error("cannot open log");
   }
 
   LOG_CTX.start_time_ = chrono::system_clock::now();
@@ -47,11 +54,14 @@ void Init(std::string_view path) {
   LOG_CTX.stream_ << "@ Wheels Log " << std::ctime(&now_time);
 }
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
 void Close() {
   LOG_CTX.stream_.close();
 }
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+}  // namespace log
+}  // namespace wheels
+/*============================================================================*/
 
-}
-
-}

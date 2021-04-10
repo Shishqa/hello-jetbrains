@@ -1,22 +1,23 @@
-#include "shader.hpp"
-#include "gl_impl.hpp"
+/*============================================================================*/
 
 #include <fstream>
-#include <iostream>
 #include <sstream>
 #include <stdexcept>
 #include <string_view>
 
 #include <wheels/log.hpp>
 
-namespace GL {
+#include "shader.hpp"
+#include "gl_impl.hpp"
 
-Shader::Shader(uint32_t type, std::string_view path)
-    : handle_(None) {
-  
+/*============================================================================*/
+namespace GL {
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+Shader::Shader(uint32_t type, std::string_view path) : handle_(None) {
   std::ifstream src_stream(path.data());
   if (!src_stream.is_open()) {
-    wheels::Log() << "Error: cannot open shader at " << path; 
+    wheels::Log() << "Error: cannot open shader at " << path;
     throw std::runtime_error("bad shader path");
   }
 
@@ -30,6 +31,8 @@ Shader::Shader(uint32_t type, std::string_view path)
   wheels::Log() << "Shader " << handle_ << " loaded and compiled";
 }
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
 void Shader::Compile(std::string_view source) {
   const char* src_ptr = source.data();
 
@@ -38,7 +41,7 @@ void Shader::Compile(std::string_view source) {
 
   int status = 0;
   glGetShaderiv(handle_, GL_COMPILE_STATUS, &status);
-  if(!status) {
+  if (!status) {
     char info_log[512] = {};
     glGetShaderInfoLog(handle_, sizeof(info_log), NULL, info_log);
     wheels::Log() << "Error: cannot compile shader: " << info_log;
@@ -46,10 +49,13 @@ void Shader::Compile(std::string_view source) {
   }
 }
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
 Shader::~Shader() {
   glDeleteShader(handle_);
   wheels::Log() << "Shader " << handle_ << " deleted";
 }
 
-}
-
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+}  // namespace GL
+/*============================================================================*/

@@ -1,6 +1,6 @@
 /*============================================================================*/
-#ifndef DISPATCHER
-#define DISPATCHER
+#ifndef _X11_DISPATCHER_HPP
+#define _X11_DISPATCHER_HPP
 /*============================================================================*/
 
 #include <unordered_set>
@@ -23,17 +23,20 @@ class EventDispatcher {
 
   ~EventDispatcher();
 
+  EventDispatcher(const EventDispatcher& other) = delete;
+  EventDispatcher& operator=(const EventDispatcher& other) = delete;
+
   long EventMask() const;
 
   void AddListener(Window* window);
-  
+
   void RemoveListener(Window* window);
 
   void RunLoop();
 
   void Stop();
 
- private: 
+ private:
   void PollEvents();
 
   void CollectGarbage();
@@ -50,9 +53,7 @@ class EventDispatcher {
   std::unordered_set<Window*> listeners_;
   std::unordered_set<Window*> pending_expose_;
   std::queue<Window*> garbage_;
-  Atom wm_delete_msg_;
   bool running_;
-  bool need_expose_;
 };
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/

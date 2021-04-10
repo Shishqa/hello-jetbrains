@@ -1,6 +1,6 @@
 /*============================================================================*/
-#ifndef WHEELS_VECTOR
-#define WHEELS_VECTOR
+#ifndef _WHEELS_VECTOR_HPP
+#define _WHEELS_VECTOR_HPP
 /*============================================================================*/
 
 #include <cstdint>
@@ -49,5 +49,5 @@ using Pos2  = Vector2<int32_t>;
 #include "vector.ipp"
 
 /*============================================================================*/
-#endif /* ifndef WHEELS_VECTOR */
+#endif /* ifndef _WHEELS_VECTOR_HPP */
 /*============================================================================*/

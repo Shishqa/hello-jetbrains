@@ -1,6 +1,6 @@
 /*============================================================================*/
-#ifndef JB_ASSIGNMENT_ASSERT_HPP
-#define JB_ASSIGNMENT_ASSERT_HPP
+#ifndef _WHEELS_ASSERT_HPP
+#define _WHEELS_ASSERT_HPP
 /*============================================================================*/
 #ifndef NDEBUG
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -8,11 +8,13 @@
 #include <cstdlib>
 #include <iostream>
 
-#define PANIC(message) {                                                       \
-  std::cerr << "Panicked at " << __FILE__ << ":" << __PRETTY_FUNCTION__ << ":" \
-            << __LINE__ << "\n" << message << "\n";                            \
-  std::abort();                                                                \
-}
+#define PANIC(message)                                                    \
+  {                                                                       \
+    std::cerr << "Panicked at " << __FILE__ << ":" << __PRETTY_FUNCTION__ \
+              << ":" << __LINE__ << "\n"                                  \
+              << message << "\n";                                         \
+    std::abort();                                                         \
+  }
 
 #define ASSERT(cond, error)                      \
   if (!(cond)) {                                 \
@@ -27,7 +29,7 @@
 #define ASSERT(cond, error)
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-#endif 
+#endif
 /*============================================================================*/
-#endif // JB_ASSIGNMENT_ASSERT_HPP 
+#endif  // _WHEELS_ASSERT_HPP
 /*============================================================================*/
