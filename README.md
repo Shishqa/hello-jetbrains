@@ -18,7 +18,7 @@ Create an app, which will create a single-window filled with color #25854b on st
 
 ```bash
 # Arch
-sudo pacman -S gcc cmake glew glu libx11
+sudo pacman -S gcc cmake mesa glew glu libx11
 
 # Ubuntu:
 sudo apt-get install build-essential cmake libgl1-mesa-dev libglu1-mesa-dev libgl-dev libglew-dev libx11-dev
