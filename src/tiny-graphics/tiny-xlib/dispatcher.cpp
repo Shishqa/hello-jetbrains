@@ -13,7 +13,7 @@ namespace X11 {
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 EventDispatcher::EventDispatcher(::Display* dpy, long event_mask)
-    : dpy_(dpy), event_mask_(event_mask) {
+    : dpy_(dpy), event_mask_(event_mask), running_(false) {
   wheels::Log() << "created event dispatcher " << this;
 }
 

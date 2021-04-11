@@ -13,7 +13,7 @@ class Window;
 
 class GlxContext {
  public:
-  GlxContext(Window& owner);
+  explicit GlxContext(Window& owner);
 
   ~GlxContext();
 

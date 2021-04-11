@@ -33,12 +33,12 @@ class Window {
   Window& operator=(const Window& other) = delete;
 
   ::Window Handle() const;
-  
+
   ::Display* GetDisplay() const;
 
   Visual* GetVisual() const;
 
-  const XWindowAttributes& Attributes() const;
+  [[nodiscard]] const XWindowAttributes& Attributes() const;
 
   virtual void OnDestroy();
 

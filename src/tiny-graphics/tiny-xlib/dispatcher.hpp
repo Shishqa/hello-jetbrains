@@ -19,7 +19,7 @@ class Window;
 
 class EventDispatcher {
  public:
-  EventDispatcher(::Display* dpy, long event_mask = ExposureMask);
+  explicit EventDispatcher(::Display* dpy, long event_mask = ExposureMask);
 
   ~EventDispatcher();
 

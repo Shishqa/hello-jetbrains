@@ -12,7 +12,7 @@ namespace X11 {
 
 class Visual {
  public:
-  Visual(::Display* dpy);
+  explicit Visual(::Display* dpy);
 
   // Non-copyable
   Visual(const Visual& other) = delete;
@@ -24,7 +24,8 @@ class Visual {
 
   ::Colormap Colormap() const;
 
-  ::GLXContext CreateGLXContext(::Display* dpy, const int* attr) const;
+  [[nodiscard]] ::GLXContext CreateGLXContext(::Display* dpy,
+                                              const int* attr) const;
 
  private:
   using CtxCreator = GLXContext (*)(::Display*, GLXFBConfig, GLXContext, Bool,
